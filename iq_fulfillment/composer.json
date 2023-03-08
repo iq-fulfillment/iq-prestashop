@@ -1,0 +1,16 @@
+{
+  "name": "iq-fulfillment/prestashop-integration",
+  "description": "IQ Fulfillment integrates seamlessly within your operations, taking the burden of fulfillment.",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "IQ Fulfillment",
+      "email": "integrations@iqfulfillment.com"
+    }
+  ],
+  "version": "1.0.0",
+  "type": "prestashop-module",
+  "require": {
+    "php": ">=7.4"
+  }
+}
