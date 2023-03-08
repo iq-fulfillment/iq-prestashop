@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<module>
+    <name>iq_fulfillment</name>
+    <displayName><![CDATA[IQ Fulfillment]]></displayName>
+    <version><![CDATA[1.0.0]]></version>
+    <description><![CDATA[IQ Fulfillment integrates seamlessly within your operations, taking the burden of fulfillment.]]></description>
+    <author><![CDATA[IQ Fulfillment]]></author>
+    <tab><![CDATA[administration]]></tab>
+	<confirmUninstall><![CDATA[Are you sure you want to uninstall?]]></confirmUninstall>
+    <is_configurable>1</is_configurable>
+    <need_instance>0</need_instance>
+	<limited_countries></limited_countries>
+</module>

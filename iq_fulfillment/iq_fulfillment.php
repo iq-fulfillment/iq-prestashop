@@ -67,8 +67,10 @@ class Iq_fulfillment extends Module
     {
         if (Tools::isSubmit('submitIqFulfillmentIntegration')) {
             Configuration::updateValue('PS_IQ_FULFILLMENT_IS_ACTIVATE', 1);
+
             $data = http_build_query([
                 "store_url" => IntegrationHelper::getStoreUrl(),
+                "currency_code" => IntegrationHelper::getCurrencyCode(),
                 "api_key" => IntegrationHelper::createAccessTokenWithPermission(),
             ]);
             Tools::redirectAdmin(IntegrationHelper::CALLBACK_URL . "?" . $data, '', false, ['target' => '_blank']);

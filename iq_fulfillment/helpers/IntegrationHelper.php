@@ -5,7 +5,7 @@ require_once(_PS_ROOT_DIR_ . '/classes/webservice/WebserviceRequest.php');
 class IntegrationHelper
 {
 
-    const CALLBACK_URL = "https://www.google.com";
+    const CALLBACK_URL = "https://0b4a-103-82-11-225.ap.ngrok.io/iq-fulfillment/iq-integrate/public/datahub/v1/magento-20/auth/callback";
     const PERMISSIONS = [
         'customers' => ['GET' => 1],
         'addresses' => ['GET' => 1],
@@ -40,6 +40,12 @@ class IntegrationHelper
     {
         $context = Context::getContext();
         return (string)$context->shop->getBaseURL(true);
+    }
+
+    public static function getCurrencyCode(): string
+    {
+        $default_currency = new Currency(Configuration::get('PS_CURRENCY_DEFAULT'));
+        return $default_currency->iso_code;
     }
 
 
