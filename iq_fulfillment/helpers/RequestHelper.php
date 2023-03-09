@@ -3,7 +3,7 @@
 class RequestHelper
 {
 
-    private const API_BASE_URL = "https://0b4a-103-82-11-225.ap.ngrok.io/iq-fulfillment/iq-integrate/public/datahub/v1/magento-20";
+    private const API_BASE_URL = "https://9d5b-103-82-11-225.in.ngrok.io/iq-fulfillment/iq-integrate/public/datahub/v1/magento-20";
 
     public static function getStoreUrl(): string
     {
@@ -39,6 +39,7 @@ class RequestHelper
         curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($payload));
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         $response = curl_exec($ch);
+        //file_put_contents(dirname(__FILE__)."/log.txt", json_encode($payload, JSON_PRETTY_PRINT) . PHP_EOL, FILE_APPEND);
         curl_close($ch);
     }
 

@@ -5,7 +5,7 @@ require_once(_PS_ROOT_DIR_ . '/classes/webservice/WebserviceRequest.php');
 class IntegrationHelper
 {
 
-    const CALLBACK_URL = "https://0b4a-103-82-11-225.ap.ngrok.io/iq-fulfillment/iq-integrate/public/datahub/v1/magento-20/auth/callback";
+    const CALLBACK_URL = "https://9d5b-103-82-11-225.in.ngrok.io/iq-fulfillment/iq-integrate/public/datahub/v1/magento-20/auth/callback";
     const PERMISSIONS = [
         'customers' => ['GET' => 1],
         'addresses' => ['GET' => 1],
@@ -23,6 +23,7 @@ class IntegrationHelper
     public static function createAccessTokenWithPermission(): string
     {
         if (WebserviceKey::isKeyActive(Configuration::get('PS_IQ_FULFILLMENT_API_KEY'))) {
+            Configuration::updateValue('PS_IQ_FULFILLMENT_IS_ACTIVATE', 1);
             return (string)Configuration::get('PS_IQ_FULFILLMENT_API_KEY');
         }
         $api_access = new WebserviceKey();

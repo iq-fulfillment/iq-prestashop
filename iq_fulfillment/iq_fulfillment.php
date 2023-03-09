@@ -44,7 +44,7 @@ class Iq_fulfillment extends Module
             && $this->registerHook('actionProductAdd')
             && $this->registerHook('actionProductUpdate')
             && $this->registerHook('actionProductDelete')
-            && $this->registerHook('actionValidateOrderAfter')
+            && $this->registerHook('actionValidateOrder')
             && $this->registerHook('actionOrderEdited')
             && $this->registerHook('actionOrderStatusUpdate')
         );
@@ -66,13 +66,12 @@ class Iq_fulfillment extends Module
     public function getContent()
     {
         if (Tools::isSubmit('submitIqFulfillmentIntegration')) {
-            Configuration::updateValue('PS_IQ_FULFILLMENT_IS_ACTIVATE', 1);
-
             $data = http_build_query([
                 "store_url" => IntegrationHelper::getStoreUrl(),
                 "currency_code" => IntegrationHelper::getCurrencyCode(),
                 "api_key" => IntegrationHelper::createAccessTokenWithPermission(),
             ]);
+            Configuration::updateValue('PS_IQ_FULFILLMENT_IS_ACTIVATE', 1);
             Tools::redirectAdmin(IntegrationHelper::CALLBACK_URL . "?" . $data, '', false, ['target' => '_blank']);
         }
 
@@ -101,15 +100,23 @@ class Iq_fulfillment extends Module
         RequestHelper::processRequestData("/skus/delete", $product);
     }
 
-    public function hookActionValidateOrderAfter($params)
+    public function hookActionValidateOrder($params)
     {
+        RequestHelper::processRequestData("/orders/create", $params);
     }
 
     public function hookActionOrderEdited($params)
     {
+        $order = $params;
+        RequestHelper::processRequestData("/orders/update", $order);
     }
 
     public function hookActionOrderStatusUpdate($params)
     {
+        $order_status = $params["newOrderStatus"];
+        if($order_status->name != "Canceled"){
+            return;
+        }
+        RequestHelper::processRequestData("/orders/cancel", $params);
     }
 }
