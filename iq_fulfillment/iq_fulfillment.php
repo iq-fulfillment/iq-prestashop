@@ -4,25 +4,26 @@
  *
  * NOTICE OF LICENSE
  *
- * This source file is subject to the Academic Free License 3.0 (AFL-3.0)
+ * This source file is subject to the MIT
  * that is bundled with this package in the file LICENSE.md.
  * It is also available through the world-wide-web at this URL:
  * https://opensource.org/licenses/MIT
+ *
  * If you did not receive a copy of the license and are unable to
  * obtain it through the world-wide-web, please send an email
  * to info@iqintegration.com so we can send you a copy immediately.
  *
- * @author    IQ Fulfillment
- * @copyright Since 2023 IQ Fulfillment
- * @license   https://opensource.org/licenses/MIT
+ * @author IQ Fulfillment
+ * @copyright Since 2023
+ * @license https://opensource.org/licenses/MIT
  */
 
 if (!defined('_PS_VERSION_')) {
     exit;
 }
 
-require_once(dirname(__FILE__) . '/helpers/IntegrationHelper.php');
-require_once(dirname(__FILE__) . '/helpers/RequestHelper.php');
+require_once(dirname(__FILE__).'/helpers/IntegrationHelper.php');
+require_once(dirname(__FILE__).'/helpers/RequestHelper.php');
 
 class Iq_fulfillment extends Module
 {
@@ -68,7 +69,6 @@ class Iq_fulfillment extends Module
             && $this->registerHook('actionOrderEdited')
             && $this->registerHook('actionOrderStatusUpdate')
         );
-
     }
 
     /**
@@ -77,6 +77,7 @@ class Iq_fulfillment extends Module
     public function uninstall()
     {
         RequestHelper::processUninstallData();
+
         return (
             parent::uninstall()
             && Configuration::updateValue('PS_IQ_FULFILLMENT_IS_ACTIVATE', 0)
@@ -94,19 +95,20 @@ class Iq_fulfillment extends Module
     {
         if (Tools::isSubmit('submitIqFulfillmentIntegration')) {
             $data = http_build_query([
-                "store_url" => IntegrationHelper::getStoreUrl(),
-                "currency_code" => IntegrationHelper::getCurrencyCode(),
-                "api_key" => IntegrationHelper::createAccessTokenWithPermission(),
+                'store_url' => IntegrationHelper::getStoreUrl(),
+                'currency_code' => IntegrationHelper::getCurrencyCode(),
+                'api_key' => IntegrationHelper::createAccessTokenWithPermission(),
             ]);
             Configuration::updateValue('PS_IQ_FULFILLMENT_IS_ACTIVATE', 1);
-            Tools::redirectAdmin(IntegrationHelper::CALLBACK_URL . "?" . $data, '');
+            Tools::redirectAdmin(IntegrationHelper::CALLBACK_URL . '?' . $data, '');
         }
 
         $is_active = Configuration::get('PS_IQ_FULFILLMENT_IS_ACTIVATE');
         if ($is_active && WebserviceKey::isKeyActive(Configuration::get('PS_IQ_FULFILLMENT_API_KEY'))) {
-            return $this->display(__FILE__, "views/templates/admin/configured.tpl");
+            return $this->display(__FILE__, 'views/templates/admin/configured.tpl');
         }
-        return $this->display(__FILE__, "views/templates/admin/configure.tpl");
+
+        return $this->display(__FILE__, 'views/templates/admin/configure.tpl');
     }
 
     /**
@@ -116,7 +118,7 @@ class Iq_fulfillment extends Module
     public function hookActionProductAdd($params)
     {
         $product = $params['product'];
-        RequestHelper::processRequestData("/skus/create", $product);
+        RequestHelper::processRequestData('/skus/create', $product);
     }
 
     /**
@@ -126,7 +128,7 @@ class Iq_fulfillment extends Module
     public function hookActionProductUpdate($params)
     {
         $product = $params['product'];
-        RequestHelper::processRequestData("/skus/create", $product);
+        RequestHelper::processRequestData('/skus/create', $product);
     }
 
     /**
@@ -136,7 +138,7 @@ class Iq_fulfillment extends Module
     public function hookActionProductDelete($params)
     {
         $product = $params['product'];
-        RequestHelper::processRequestData("/skus/delete", $product);
+        RequestHelper::processRequestData('/skus/delete', $product);
     }
 
     /**
@@ -145,7 +147,7 @@ class Iq_fulfillment extends Module
      */
     public function hookActionValidateOrder($params)
     {
-        RequestHelper::processRequestData("/orders/create", $params);
+        RequestHelper::processRequestData('/orders/create', $params);
     }
 
     /**
@@ -155,7 +157,7 @@ class Iq_fulfillment extends Module
     public function hookActionOrderEdited($params)
     {
         $order = $params;
-        RequestHelper::processRequestData("/orders/update", $order);
+        RequestHelper::processRequestData('/orders/update', $order);
     }
 
     /**
@@ -164,10 +166,10 @@ class Iq_fulfillment extends Module
      */
     public function hookActionOrderStatusUpdate($params)
     {
-        $order_status = $params["newOrderStatus"];
-        if ($order_status->name != "Canceled") {
+        $order_status = $params['newOrderStatus'];
+        if ($order_status->name != 'Canceled') {
             return;
         }
-        RequestHelper::processRequestData("/orders/cancel", $params);
+        RequestHelper::processRequestData('/orders/cancel', $params);
     }
 }
